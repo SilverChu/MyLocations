@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 // 执行一次的dateFormatter对象
 private let dateFormatter: DateFormatter = {
@@ -23,6 +24,8 @@ class LocationDetailsViewController: UITableViewController {
     var coordinate = CLLocationCoordinate2D(latitude: 0, longitude: 0) // 经纬度坐标
     var placemark: CLPlacemark? // 接收上级view传递的placemark
     var categoryName = "No Category"
+    var managedObjectContext: NSManagedObjectContext! // 连接Core Data，获取AppDelegate中的对象
+    var date = Date() // 记录存储Location时的日期
     
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var categoryLabel: UILabel!
@@ -36,9 +39,26 @@ class LocationDetailsViewController: UITableViewController {
         
         hudView.text = "Tagged"
         
-        afterDelay(0.6) {
-            self.dismiss(animated: true, completion: nil)
+        // 设置Location的各项值
+        let location = Location(context: managedObjectContext) // Core Data的Location方法
+        
+        location.locationDescription = descriptionTextView.text
+        location.category = categoryName
+        location.latitude = coordinate.latitude
+        location.longitude = coordinate.longitude
+        location.date = date
+        location.placemark = placemark
+        
+        do {
+            try managedObjectContext.save() // 存储到Core Data中
+            
+            afterDelay(0.6) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        } catch {
+            fatalCoreDataError(error)
         }
+        
     }
     
     @IBAction func cancel() {
@@ -66,7 +86,7 @@ class LocationDetailsViewController: UITableViewController {
             addressLabel.text = "No Address Found"
         }
         
-        dateLabel.text = format(date: Date())
+        dateLabel.text = format(date: date)
         
         // 点击除了Description之外的地方隐藏键盘
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
