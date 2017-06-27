@@ -17,6 +17,8 @@
 		7B0EFE6A1EFD03690012FE7D /* Location+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0EFE681EFD03690012FE7D /* Location+CoreDataClass.swift */; };
 		7B0EFE6B1EFD03690012FE7D /* Location+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B0EFE691EFD03690012FE7D /* Location+CoreDataProperties.swift */; };
 		7B1220761EFA110200E7A465 /* LocationDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B1220751EFA110200E7A465 /* LocationDetailsViewController.swift */; };
+		7B13E25C1F020C2700694DCC /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B13E25B1F020C2700694DCC /* MapKit.framework */; };
+		7B13E25E1F020E4F00694DCC /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B13E25D1F020E4F00694DCC /* MapViewController.swift */; };
 		7B24E2201EFB6AF7009A0689 /* HudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B24E21F1EFB6AF7009A0689 /* HudView.swift */; };
 		7B24E2221EFBC16E009A0689 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B24E2211EFBC16E009A0689 /* Functions.swift */; };
 		7B2F91501F00B5AF000F676B /* LocationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B2F914F1F00B5AF000F676B /* LocationsViewController.swift */; };
@@ -37,6 +39,8 @@
 		7B0EFE681EFD03690012FE7D /* Location+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataClass.swift"; sourceTree = "<group>"; };
 		7B0EFE691EFD03690012FE7D /* Location+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Location+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		7B1220751EFA110200E7A465 /* LocationDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationDetailsViewController.swift; sourceTree = "<group>"; };
+		7B13E25B1F020C2700694DCC /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		7B13E25D1F020E4F00694DCC /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		7B24E21F1EFB6AF7009A0689 /* HudView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HudView.swift; sourceTree = "<group>"; };
 		7B24E2211EFBC16E009A0689 /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		7B2F914F1F00B5AF000F676B /* LocationsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationsViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B13E25C1F020C2700694DCC /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,6 +65,7 @@
 			children = (
 				7B09C7BA1EF282F500AF4F08 /* MyLocations */,
 				7B09C7B91EF282F500AF4F08 /* Products */,
+				7B13E25A1F020C2700694DCC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,6 +91,7 @@
 				7BC4C4EB1F00EAF3001FD74D /* LocationCell.swift */,
 				7B1220751EFA110200E7A465 /* LocationDetailsViewController.swift */,
 				7B2F914F1F00B5AF000F676B /* LocationsViewController.swift */,
+				7B13E25D1F020E4F00694DCC /* MapViewController.swift */,
 				7B09C7BF1EF282F500AF4F08 /* SecondViewController.swift */,
 				7B09C7C41EF282F500AF4F08 /* Assets.xcassets */,
 				7B0EFE591EFCEB320012FE7D /* DataModel.xcdatamodeld */,
@@ -92,6 +99,14 @@
 				7B09C7C11EF282F500AF4F08 /* Main.storyboard */,
 			);
 			path = MyLocations;
+			sourceTree = "<group>";
+		};
+		7B13E25A1F020C2700694DCC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B13E25B1F020C2700694DCC /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -128,6 +143,11 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 9888JNG5TE;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -173,6 +193,7 @@
 				7B24E2201EFB6AF7009A0689 /* HudView.swift in Sources */,
 				7B2F91501F00B5AF000F676B /* LocationsViewController.swift in Sources */,
 				7B0EFE6B1EFD03690012FE7D /* Location+CoreDataProperties.swift in Sources */,
+				7B13E25E1F020E4F00694DCC /* MapViewController.swift in Sources */,
 				7BC4C4EC1F00EAF3001FD74D /* LocationCell.swift in Sources */,
 				7B24E2221EFBC16E009A0689 /* Functions.swift in Sources */,
 				7B09C7BC1EF282F500AF4F08 /* AppDelegate.swift in Sources */,

@@ -53,7 +53,7 @@ class LocationDetailsViewController: UITableViewController {
         let location: Location
         if let temp = locationToEdit {
             hudView.text = "Updated"
-            location = temp
+            location = temp // Core Data似乎会根据id？或者一些其他存储信息匹配到对应的数据，进行更新
         } else {
             hudView.text = "Tagged"
             location = Location(context: managedObjectContext) // Core Data的Location方法
@@ -92,7 +92,7 @@ class LocationDetailsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let location = locationToEdit {
+        if let _ = locationToEdit {
             title = "Edit Location"
         }
         

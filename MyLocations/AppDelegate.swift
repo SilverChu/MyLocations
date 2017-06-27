@@ -42,6 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             locationsViewController.managedObjectContext = managedObjectContext // 传递context给LocationsViewController
             let _ = locationsViewController.view // Tag Location后，前往Locations'tab未刷新出新增内容的推荐解决方式
+            
+            let mapViewController = tabBarViewControllers[2] as! MapViewController
+            mapViewController.managedObjectContext = managedObjectContext
         }
         
         print(applicationDocumentsDirectory)
