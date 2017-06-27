@@ -35,7 +35,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let tabBarViewControllers = tabBarController.viewControllers {
             let currentLocationViewController = tabBarViewControllers[0] as! CurrentLocationViewController
             
-            currentLocationViewController.managedObjectContext = managedObjectContext
+            currentLocationViewController.managedObjectContext = managedObjectContext // 传递context给CurrentLocationViewController
+            
+            let navigationController = tabBarViewControllers[1] as! UINavigationController
+            let locationsViewController = navigationController.viewControllers[0] as! LocationsViewController
+            
+            locationsViewController.managedObjectContext = managedObjectContext // 传递context给LocationsViewController
+            let _ = locationsViewController.view // Tag Location后，前往Locations'tab未刷新出新增内容的推荐解决方式
         }
         
         print(applicationDocumentsDirectory)

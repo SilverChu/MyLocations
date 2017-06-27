@@ -26,6 +26,19 @@ class LocationDetailsViewController: UITableViewController {
     var categoryName = "No Category"
     var managedObjectContext: NSManagedObjectContext! // 连接Core Data，获取AppDelegate中的对象
     var date = Date() // 记录存储Location时的日期
+    var descriptionText = ""
+    var locationToEdit: Location? {
+        // locationToEdit属性发生变化后执行的操作，此处执行是在viewDidLoad()方法之前
+        didSet {
+            if let location = locationToEdit {
+                descriptionText = location.locationDescription
+                categoryName = location.category
+                date = location.date
+                coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude)
+                placemark = location.placemark
+            }
+        }
+    }
     
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var categoryLabel: UILabel!
@@ -37,11 +50,16 @@ class LocationDetailsViewController: UITableViewController {
     @IBAction func done() {
         let hudView = HudView.hud(inView: navigationController!.view, animated: true)
         
-        hudView.text = "Tagged"
+        let location: Location
+        if let temp = locationToEdit {
+            hudView.text = "Updated"
+            location = temp
+        } else {
+            hudView.text = "Tagged"
+            location = Location(context: managedObjectContext) // Core Data的Location方法
+        }
         
         // 设置Location的各项值
-        let location = Location(context: managedObjectContext) // Core Data的Location方法
-        
         location.locationDescription = descriptionTextView.text
         location.category = categoryName
         location.latitude = coordinate.latitude
@@ -74,7 +92,11 @@ class LocationDetailsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        descriptionTextView.text = ""
+        if let location = locationToEdit {
+            title = "Edit Location"
+        }
+        
+        descriptionTextView.text = descriptionText
         categoryLabel.text = categoryName
         
         latitudeLabel.text = String(format: "%.8f", coordinate.latitude)
