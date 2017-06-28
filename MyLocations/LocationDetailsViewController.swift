@@ -100,7 +100,7 @@ class LocationDetailsViewController: UITableViewController {
         categoryLabel.text = categoryName
         
         latitudeLabel.text = String(format: "%.8f", coordinate.latitude)
-        latitudeLabel.text = String(format: "%.8f", coordinate.latitude)
+        longitudeLabel.text = String(format: "%.8f", coordinate.longitude)
         
         if let placemark = placemark {
             addressLabel.text = string(from: placemark)

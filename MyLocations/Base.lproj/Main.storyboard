@@ -94,7 +94,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5J-7L-Pyd" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1301" y="-578"/>
+            <point key="canvasLocation" x="1043" y="-758"/>
         </scene>
         <!--Tag Location-->
         <scene sceneID="xNx-ke-yjq">
@@ -303,7 +303,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k2i-Id-UQq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3411" y="-181"/>
+            <point key="canvasLocation" x="3643" y="24"/>
         </scene>
         <!--Category Picker View Controller-->
         <scene sceneID="5vY-0e-RZT">
@@ -344,7 +344,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lif-AE-BeJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="TIA-z7-h4Z" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="4247" y="-181"/>
+            <point key="canvasLocation" x="4474" y="23"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -382,7 +382,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mmk-cj-tVK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2593" y="-180"/>
+            <point key="canvasLocation" x="2760" y="0.0"/>
         </scene>
         <!--Locations-->
         <scene sceneID="TGt-Mv-q8q">
@@ -432,7 +432,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OKP-Bq-ZpF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1764" y="97"/>
+            <point key="canvasLocation" x="1875" y="0.0"/>
         </scene>
         <!--Map-->
         <scene sceneID="Cvw-Oc-gbp">
@@ -470,6 +470,9 @@
                                         </barButtonItem>
                                     </navigationItem>
                                 </items>
+                                <connections>
+                                    <outlet property="delegate" destination="fcH-RC-xsu" id="S9w-We-SaC"/>
+                                </connections>
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -477,11 +480,12 @@
                     <tabBarItem key="tabBarItem" title="Map" id="uiP-8U-exp"/>
                     <connections>
                         <outlet property="mapView" destination="wrZ-od-PX8" id="RW7-0s-PZJ"/>
+                        <segue destination="fZO-AC-3ei" kind="presentation" identifier="EditLocation" id="IXy-hB-m2f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mEz-4N-jTT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="938" y="861"/>
+            <point key="canvasLocation" x="1875" y="805"/>
         </scene>
         <!--Locations-->
         <scene sceneID="27f-x8-wJK">
@@ -498,13 +502,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fd0-bb-pmd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="938" y="98"/>
+            <point key="canvasLocation" x="1044" y="0.0"/>
         </scene>
     </scenes>
     <resources>
         <image name="first" width="30" height="30"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="E9V-eE-MHE"/>
+        <segue reference="IXy-hB-m2f"/>
     </inferredMetricsTieBreakers>
 </document>
