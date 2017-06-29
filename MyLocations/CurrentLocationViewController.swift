@@ -117,7 +117,7 @@ class CurrentLocationViewController: UIViewController, CLLocationManagerDelegate
         }
         
         // 用于衡量位置信息更新是否仍在改善
-        var distance = CLLocationDistance(DBL_MAX)
+        var distance = CLLocationDistance(Double.greatestFiniteMagnitude) // DBL_MAX
         if let location = location {
             distance = newLocation.distance(from: location)
         }

@@ -39,6 +39,18 @@ class LocationDetailsViewController: UITableViewController {
             }
         }
     }
+    var image: UIImage? {
+        // 按照练习要求使用的didSet来观察其变化，并执行如下操作（未必正确）
+        didSet {
+            if let theImage = image {
+                let ratio = theImage.size.width / theImage.size.height // 使用宽高比来限制cell的高度
+                imageView.image = theImage
+                imageView.isHidden = false
+                imageView.frame = CGRect(x: 10, y: 10, width: 260, height: 260 / ratio) // 根据比率变换高度
+                addPhotoLabel.isHidden = true
+            }
+        }
+    }
     
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var categoryLabel: UILabel!
@@ -46,6 +58,8 @@ class LocationDetailsViewController: UITableViewController {
     @IBOutlet weak var longitudeLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var addPhotoLabel: UILabel!
 
     @IBAction func done() {
         let hudView = HudView.hud(inView: navigationController!.view, animated: true)
@@ -115,6 +129,8 @@ class LocationDetailsViewController: UITableViewController {
         
         gestureRecognizer.cancelsTouchesInView = false
         tableView.addGestureRecognizer(gestureRecognizer)
+        
+        listenForBackgroundNotification()
     }
     
     // Prepare-for-segue
@@ -127,8 +143,15 @@ class LocationDetailsViewController: UITableViewController {
     
     // MARK: - UITableViewDelegate
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        /*
         if indexPath.section == 0 && indexPath.row == 0 {
             return 88
+        } else if indexPath.section == 1 {
+            if imageView.isHidden {
+                return 44
+            } else {
+                return imageView.frame.height + 20 // 按照练习使用宽高比来限制table view cell的高度
+            }
         } else if indexPath.section == 2 && indexPath.row == 2 {
             addressLabel.frame.size = CGSize(width: view.bounds.size.width - 115, height: 10000)
             addressLabel.sizeToFit()
@@ -136,6 +159,21 @@ class LocationDetailsViewController: UITableViewController {
             addressLabel.frame.origin.x = view.bounds.size.width - addressLabel.frame.size.width - 15
             return addressLabel.frame.size.height + 20
         } else {
+            return 44
+        }
+        */
+        switch (indexPath.section, indexPath.row) {
+        case (0, 0):
+            return 88
+        case (1, _):
+            return imageView.isHidden ? 44 : imageView.frame.height + 20 // 按照练习使用宽高比来限制table view cell的高度
+        case (2, 2):
+            addressLabel.frame.size = CGSize(width: view.bounds.size.width - 115, height: 10000)
+            addressLabel.sizeToFit()
+            print("\(view.bounds.size.width) - \(addressLabel.frame.size.width) - \(addressLabel.frame.size.height)")
+            addressLabel.frame.origin.x = view.bounds.size.width - addressLabel.frame.size.width - 15
+            return addressLabel.frame.size.height + 20
+        default:
             return 44
         }
     }
@@ -152,6 +190,9 @@ class LocationDetailsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 && indexPath.row == 0 {
             descriptionTextView.becomeFirstResponder()
+        } else if indexPath.section == 1 && indexPath.row == 0 {
+            tableView.deselectRow(at: indexPath, animated: true)
+            pickPhoto()
         }
     }
     
@@ -198,6 +239,87 @@ class LocationDetailsViewController: UITableViewController {
         }
         
         descriptionTextView.resignFirstResponder()
+    }
+    /*
+    func show(image: UIImage) {
+        imageView.image = image
+        imageView.isHidden = false
+        imageView.frame = CGRect(x: 10, y: 10, width: 260, height: 260)
+        addPhotoLabel.isHidden = true
+    }
+    */
+    
+    func listenForBackgroundNotification() {
+        NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main) { _ in
+            if self.presentedViewController != nil {
+                self.dismiss(animated: false, completion: nil)
+            }
+            
+            self.descriptionTextView.resignFirstResponder()
+        }
+    }
+    
+}
+
+extension LocationDetailsViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    func takePhotoWithCamera() {
+        let imagePicker = UIImagePickerController()
+        
+        imagePicker.sourceType = .camera
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func choosePhotoFromLibrary() {
+        let imagePicker = UIImagePickerController()
+        
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        image = info[UIImagePickerControllerEditedImage] as? UIImage
+        /*
+        if let theImage = image {
+            show(image: theImage)
+        }
+        */
+        tableView.reloadData()
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // 判断是否弹出选项菜单
+    func pickPhoto() {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            showPhotoMenu()
+        } else {
+            choosePhotoFromLibrary()
+        }
+    }
+    
+    func showPhotoMenu() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        
+        alertController.addAction(cancelAction)
+        
+        let takePhotoAction = UIAlertAction(title: "Take Photo", style: .default, handler: { _ in self.takePhotoWithCamera() })
+        
+        alertController.addAction(takePhotoAction)
+        
+        let chooseFromLibraryAction = UIAlertAction(title: "Choose From Library", style: .default, handler: { _ in self.choosePhotoFromLibrary() })
+        
+        alertController.addAction(chooseFromLibraryAction)
+        
+        present(alertController, animated: true, completion: nil)
     }
     
 }
