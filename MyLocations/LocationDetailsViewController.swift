@@ -51,6 +51,7 @@ class LocationDetailsViewController: UITableViewController {
             }
         }
     }
+    var observer: Any!
     
     @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet weak var categoryLabel: UILabel!
@@ -101,6 +102,11 @@ class LocationDetailsViewController: UITableViewController {
         let controller = segue.source as! CategoryPickerViewController
         categoryName = controller.selectedCategoryName
         categoryLabel.text = categoryName
+    }
+    
+    deinit {
+        print("*** deinit \(self)")
+        NotificationCenter.default.removeObserver(observer)
     }
     
     override func viewDidLoad() {
@@ -250,12 +256,14 @@ class LocationDetailsViewController: UITableViewController {
     */
     
     func listenForBackgroundNotification() {
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main) { _ in
-            if self.presentedViewController != nil {
-                self.dismiss(animated: false, completion: nil)
+        // 避免闭包与LocationDetailsViewController形成强引用循环，使用捕获列表[weak self]来打破循环
+        observer = NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationDidEnterBackground, object: nil, queue: OperationQueue.main) { [weak self] _ in
+            if let strongSelf = self {
+                if strongSelf.presentedViewController != nil {
+                    strongSelf.dismiss(animated: true, completion: nil)
+                }
+                strongSelf.descriptionTextView.resignFirstResponder()
             }
-            
-            self.descriptionTextView.resignFirstResponder()
         }
     }
     
