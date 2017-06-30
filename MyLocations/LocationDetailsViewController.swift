@@ -72,6 +72,7 @@ class LocationDetailsViewController: UITableViewController {
         } else {
             hudView.text = "Tagged"
             location = Location(context: managedObjectContext) // Core Data的Location方法
+            location.photoID = nil
         }
         
         // 设置Location的各项值
@@ -81,6 +82,19 @@ class LocationDetailsViewController: UITableViewController {
         location.longitude = coordinate.longitude
         location.date = date
         location.placemark = placemark
+        if let image = image {
+            if !location.hasPhoto {
+                location.photoID = Location.nextPhotoID() as NSNumber
+            }
+            
+            if let data = UIImageJPEGRepresentation(image, 0.5) {
+                do {
+                    try data.write(to: location.photoURL, options: .atomic)
+                } catch {
+                    print("Error writing file: \(error)")
+                }
+            }
+        }
         
         do {
             try managedObjectContext.save() // 存储到Core Data中
@@ -112,8 +126,13 @@ class LocationDetailsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let _ = locationToEdit {
+        if let location = locationToEdit {
             title = "Edit Location"
+            if location.hasPhoto {
+                if let theImage = location.photoImage {
+                    show(image: theImage)
+                }
+            }
         }
         
         descriptionTextView.text = descriptionText
@@ -246,14 +265,13 @@ class LocationDetailsViewController: UITableViewController {
         
         descriptionTextView.resignFirstResponder()
     }
-    /*
+
     func show(image: UIImage) {
         imageView.image = image
         imageView.isHidden = false
         imageView.frame = CGRect(x: 10, y: 10, width: 260, height: 260)
         addPhotoLabel.isHidden = true
     }
-    */
     
     func listenForBackgroundNotification() {
         // 避免闭包与LocationDetailsViewController形成强引用循环，使用捕获列表[weak self]来打破循环

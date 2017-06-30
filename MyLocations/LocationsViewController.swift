@@ -81,6 +81,8 @@ class LocationsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let location = fetchedResultsController.object(at: indexPath)
+            
+            location.removePhotoFile() // 删除本地存储的图片文件
             managedObjectContext.delete(location)
             
             do {
