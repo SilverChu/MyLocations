@@ -30,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        customizeAppearance()
+        
         let tabBarController = window!.rootViewController as! UITabBarController
         
         if let tabBarViewControllers = tabBarController.viewControllers {
@@ -100,6 +102,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else {
             return rootViewController
         }
+    }
+    
+    func customizeAppearance() {
+        UINavigationBar.appearance().barTintColor = UIColor.black
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
+        UITabBar.appearance().barTintColor = UIColor.black
+        
+        let tintColor = UIColor(red: 255/255.0, green: 238/255.0, blue: 136/255.0, alpha: 1.0)
+        
+        UITabBar.appearance().tintColor = tintColor
     }
 
 }
